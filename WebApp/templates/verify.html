@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verify Citations - AI Legal Assistant</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<nav>
+  <div class="nav-container">
+    <a href="/" class="logo">⚖ AI Legal Assistant</a>
+    <div class="nav-links">
+      <a href="/pricing">Pricing</a>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/generate">Generate</a>
+      <a href="/verify" class="active">Verify Citations</a>
+      <a href="/workflow">Workflow</a>
+      <a href="/templates">Templates</a>
+    </div>
+  </div>
+</nav>
+
+<section class="verify">
+  <div class="container">
+    <h1>Citation Verification</h1>
+    <p class="subtitle">Paste your legal text below. We'll scan for citations and verify each against CourtListener's 9M+ case database to prevent hallucinations.</p>
+    
+    <div class="verify-layout">
+      <div class="verify-form">
+        <form id="verifyForm">
+          <div class="form-group">
+            <label>Legal Text to Verify</label>
+            <textarea id="legalText" rows="12" placeholder="Paste your legal document text here. Include any case citations like:&#10;In Marvin v. Marvin, 557 P.2d 106 (1976)...&#10;See also Smith v. Jones, 123 F.2d 456..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-large" id="verifyBtn">🔍 Verify Citations</button>
+        </form>
+      </div>
+      
+      <div class="verify-results" id="resultsArea" style="display:none;">
+        <h3>Verification Results</h3>
+        <div class="stats-bar">
+          <div class="stat-item">
+            <span class="stat-number" id="totalCitations">0</span>
+            <span class="stat-label">Total Citations</span>
+          </div>
+          <div class="stat-item verified">
+            <span class="stat-number" id="verifiedCount">0</span>
+            <span class="stat-label">✅ Verified</span>
+          </div>
+          <div class="stat-item hallucinated">
+            <span class="stat-number" id="hallucinatedCount">0</span>
+            <span class="stat-label">❌ Hallucinated</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number" id="rate">0%</span>
+            <span class="stat-label">Verification Rate</span>
+          </div>
+        </div>
+        
+        <div id="verifiedList"></div>
+        <div id="hallucinatedList"></div>
+        <div id="reportArea"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+document.getElementById('verifyForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const btn = document.getElementById('verifyBtn');
+  btn.disabled = true;
+  btn.textContent = '🔍 Verifying...';
+  
+  const text = document.getElementById('legalText').value;
+  
+  try {
+    const response = await fetch('/api/verify', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({text})
+    });
+    
+    const result = await response.json();
+    
+    if (result.success) {
+      document.getElementById('totalCitations').textContent = result.total;
+      document.getElementById('verifiedCount').textContent = result.verified;
+      document.getElementById('hallucinatedCount').textContent = result.hallucinated;
+      document.getElementById('rate').textContent = result.rate;
+      
+      // Verified list
+      let verifiedHtml = '<div class="result-section verified"><h4>✅ Verified Citations</h4>';
+      if (result.verified_list && result.verified_list.length > 0) {
+        result.verified_list.forEach(v => {
+          verifiedHtml += `<div class="citation-item"><strong>${v.citation}</strong><br><small>${v.case_name || 'Case name not returned'}<br>${v.url ? `<a href="${v.url}" target="_blank">View on CourtListener</a>` : ''}</small></div>`;
+        });
+      } else {
+        verifiedHtml += '<p>No verified citations found.</p>';
+      }
+      verifiedHtml += '</div>';
+      document.getElementById('verifiedList').innerHTML = verifiedHtml;
+      
+      // Hallucinated list
+      let halluHtml = '<div class="result-section hallucinated"><h4>❌ Hallucinated Citations (DO NOT FILE)</h4>';
+      if (result.hallucinated_list && result.hallucinated_list.length > 0) {
+        result.hallucinated_list.forEach(h => {
+          halluHtml += `<div class="citation-item">${h}</div>`;
+        });
+      } else {
+        halluHtml += '<p>🎉 No hallucinations detected!</p>';
+      }
+      halluHtml += '</div>';
+      document.getElementById('hallucinatedList').innerHTML = halluHtml;
+      
+      // Report
+      if (result.report) {
+        document.getElementById('reportArea').innerHTML = `
+          <div class="report-section">
+            <h4>📝 Full Verification Report</h4>
+            <pre>${result.report}</pre>
+          </div>`;
+      }
+      
+      document.getElementById('resultsArea').style.display = 'block';
+    } else {
+      alert('Error: ' + (result.error || 'Unknown error'));
+    }
+  } catch (err) {
+    alert('Error: ' + err.message);
+  }
+  
+  btn.disabled = false;
+  btn.textContent = '🔍 Verify Citations';
+});
+</script>
+
+<footer>
+  <div class="container">
+    <p>&copy; 2026 AI Legal Document Assistant - Project SUMMER.</p>
+  </div>
+</footer>
+</body>
+</html>

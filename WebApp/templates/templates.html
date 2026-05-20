@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Templates - AI Legal Assistant</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<nav>
+  <div class="nav-container">
+    <a href="/" class="logo">⚖ AI Legal Assistant</a>
+    <div class="nav-links">
+      <a href="/pricing">Pricing</a>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/generate">Generate</a>
+      <a href="/verify">Verify Citations</a>
+      <a href="/workflow">Workflow</a>
+      <a href="/templates" class="active">Templates</a>
+    </div>
+  </div>
+</nav>
+
+<section class="templates">
+  <div class="container">
+    <h1>Legal Document Templates</h1>
+    <p class="subtitle">60+ templates across 6 states. Each template includes court-ready formatting, required attachments checklist, and filing instructions.</p>
+    
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterTemplates('all', this)">All ({{ templates|length }})</button>
+      <button class="filter-btn" onclick="filterTemplates('AL', this)">Alabama</button>
+      <button class="filter-btn" onclick="filterTemplates('CA', this)">California</button>
+      <button class="filter-btn" onclick="filterTemplates('TX', this)">Texas</button>
+      <button class="filter-btn" onclick="filterTemplates('NY', this)">New York</button>
+      <button class="filter-btn" onclick="filterTemplates('FL', this)">Florida</button>
+      <button class="filter-btn" onclick="filterTemplates('IL', this)">Illinois</button>
+    </div>
+    
+    <!-- Templates Grid -->
+    <div class="templates-grid" id="templatesGrid">
+      {% for t in templates %}
+      <div class="template-card" data-state="{{ t.state_code }}">
+        <div class="template-header">
+          <h3>{{ t.state }} - {{ t.doc_type }}</h3>
+          <span class="state-badge">{{ t.state_code }}</span>
+        </div>
+        <p class="template-filename">{{ t.filename }}</p>
+        <div class="template-actions">
+          <a href="{{ t.view_url }}" class="btn btn-small">View</a>
+          <a href="{{ t.download_url }}" class="btn btn-small btn-outline">Download</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<script>
+function filterTemplates(state, btn) {
+  // Update active button
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  
+  // Filter cards
+  document.querySelectorAll('.template-card').forEach(card => {
+    if (state === 'all' || card.dataset.state === state) {
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+</script>
+
+<footer>
+  <div class="container">
+    <p>&copy; 2026 AI Legal Document Assistant - Project SUMMER.</p>
+  </div>
+</footer>
+</body>
+</html>

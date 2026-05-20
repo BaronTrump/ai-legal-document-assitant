@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Legal Document Assistant</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<!-- Navigation -->
+<nav>
+  <div class="nav-container">
+    <a href="/" class="logo">⚖ AI Legal Assistant</a>
+    <div class="nav-links">
+      <a href="/pricing">Pricing</a>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/generate">Generate</a>
+      <a href="/verify">Verify Citations</a>
+      <a href="/workflow">Workflow</a>
+      <a href="/templates">Templates</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="container">
+    <h1>AI-Powered Legal Documents for Pro Se Litigants</h1>
+    <p class="subtitle">Generate court-ready legal documents with AI. Verify citations. Prevent hallucinations. Built for self-represented litigants in Alabama, California, Texas, New York, Florida & Illinois.</p>
+    <div class="cta-group">
+      <a href="/generate" class="btn btn-primary btn-large">Start Generating</a>
+      <a href="/pricing" class="btn btn-outline btn-large">View Pricing</a>
+    </div>
+    
+    <div class="stats">
+      <div class="stat">
+        <span class="stat-number">60+</span>
+        <span class="stat-label">Templates</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">6</span>
+        <span class="stat-label">States</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">9M+</span>
+        <span class="stat-label">Case Law (CourtListener)</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">200+</span>
+        <span class="stat-label">AI Models (OpenRouter)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="features">
+  <div class="container">
+    <h2>Why Choose Our Platform?</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📄</div>
+        <h3>AI Document Generation</h3>
+        <p>Fill court forms with AI using OpenRouter (Claude, GPT-4, Gemini). Supports 60+ templates across 6 states.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <h3>Citation Verification</h3>
+        <p>Prevent hallucinations. Every citation verified against CourtListener's 9M+ case database before filing.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Judge Profiling</h3>
+        <p>Analyze judge ruling patterns, motion grant rates, and case strategy with Docket Alarm data.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔄</div>
+        <h3>No-Code Workflows</h3>
+        <p>Build custom case strategy workflows. Pre-built templates for eviction, custody, divorce, debt defense.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏛</div>
+        <h3>Multi-State Support</h3>
+        <p>Alabama, California, Texas, New York, Florida, Illinois. Family court forms, petitions, motions, subpoenas.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💾</div>
+        <h3>Export Ready</h3>
+        <p>Download as Markdown or plain text. Court-ready formatting. Includes filing instructions & checklists.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing Preview -->
+<section class="pricing-preview">
+  <div class="container">
+    <h2>Simple, Transparent Pricing</h2>
+    <div class="pricing-grid">
+      {% for tier in pricing_tiers %}
+      <div class="pricing-card {% if tier.highlight %}highlighted{% endif %}">
+        {% if tier.highlight %}<div class="popular-badge">POPULAR</div>{% endif %}
+        <h3>{{ tier.name }}</h3>
+        <div class="price">{{ tier.price_display }}</div>
+        <ul class="features-list">
+          {% for feature in tier.features %}
+          <li>✅ {{ feature }}</li>
+          {% endfor %}
+        </ul>
+        <a href="/pricing" class="btn {% if tier.highlight %}btn-primary{% else %}btn-outline{% endif %}">{{ tier.cta }}</a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <p>&copy; 2026 AI Legal Document Assistant - Project SUMMER. Not legal advice. Attorney-client relationship NOT created.</p>
+    <p><a href="/pricing">Pricing</a> | <a href="/dashboard">Dashboard</a> | <a href="https://github.com/cyber/Project-SUMMER">GitHub</a></p>
+  </div>
+</footer>
+</body>
+</html>

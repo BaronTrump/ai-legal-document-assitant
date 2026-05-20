@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>View Template - AI Legal Assistant</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<style>
+  .template-view {
+    max-width: 900px;
+    margin: 40px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  .template-content {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 6px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    max-height: 600px;
+    overflow-y: auto;
+    margin: 20px 0;
+  }
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-container">
+    <a href="/" class="logo">⚖ AI Legal Assistant</a>
+    <div class="nav-links">
+      <a href="/pricing">Pricing</a>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/generate">Generate</a>
+      <a href="/verify">Verify Citations</a>
+      <a href="/workflow">Workflow</a>
+      <a href="/templates" class="active">Templates</a>
+    </div>
+  </div>
+</nav>
+
+<section class="container">
+  <h1>Template: {{ filename }}</h1>
+  <a href="/templates" class="btn btn-small">← Back to Templates</a>
+  
+  <div class="template-view">
+    <div class="template-content">{{ content }}</div>
+    <div style="text-align:center;">
+      <a href="/generate" class="btn btn-primary">🤖 Generate with this Template</a>
+      <a href="/templates" class="btn btn-outline">Browse More Templates</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>&copy; 2026 AI Legal Document Assistant - Project SUMMER.</p>
+  </div>
+</footer>
+</body>
+</html>

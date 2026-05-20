@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard - AI Legal Assistant</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<nav>
+  <div class="nav-container">
+    <a href="/" class="logo">⚖ AI Legal Assistant</a>
+    <div class="nav-links">
+      <a href="/pricing">Pricing</a>
+      <a href="/dashboard" class="active">Dashboard</a>
+      <a href="/generate">Generate</a>
+      <a href="/verify">Verify Citations</a>
+      <a href="/workflow">Workflow</a>
+      <a href="/templates">Templates</a>
+    </div>
+  </div>
+</nav>
+
+<section class="dashboard">
+  <div class="container">
+    <h1>Dashboard</h1>
+    <p class="subtitle">Manage your generated documents, verify citations, and track your case workflow.</p>
+    
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <a href="/generate" class="action-card">
+        <div class="action-icon">📄</div>
+        <h3>Generate Document</h3>
+        <p>Create a new legal document</p>
+      </a>
+      <a href="/verify" class="action-card">
+        <div class="action-icon">🔍</div>
+        <h3>Verify Citations</h3>
+        <p>Check for hallucinations</p>
+      </a>
+      <a href="/workflow" class="action-card">
+        <div class="action-icon">🔄</div>
+        <h3>Build Workflow</h3>
+        <p>Case strategy builder</p>
+      </a>
+      <a href="/templates" class="action-card">
+        <div class="action-icon">📋</div>
+        <h3>Browse Templates</h3>
+        <p>60+ templates</p>
+      </a>
+    </div>
+    
+    <!-- Generated Documents -->
+    <div class="documents-section">
+      <h2>Your Documents ({{ docs|length }})</h2>
+      {% if docs %}
+      <table class="doc-table">
+        <thead>
+          <tr>
+            <th>Filename</th>
+            <th>Date</th>
+            <th>Size</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for doc in docs %}
+          <tr>
+            <td>{{ doc.name }}</td>
+            <td>{{ doc.date }}</td>
+            <td>{{ doc.size }}</td>
+            <td>
+              <a href="/download/{{ doc.name }}" class="btn btn-small">Download</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div class="empty-state">
+        <p>📄 No documents generated yet.</p>
+        <a href="/generate" class="btn btn-primary">Generate Your First Document</a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>&copy; 2026 AI Legal Document Assistant - Project SUMMER.</p>
+  </div>
+</footer>
+</body>
+</html>

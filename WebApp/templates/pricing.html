@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing - AI Legal Document Assistant</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<nav>
+  <div class="nav-container">
+    <a href="/" class="logo">⚖ AI Legal Assistant</a>
+    <div class="nav-links">
+      <a href="/pricing">Pricing</a>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/generate">Generate</a>
+      <a href="/verify">Verify Citations</a>
+      <a href="/workflow">Workflow</a>
+      <a href="/templates">Templates</a>
+    </div>
+  </div>
+</nav>
+
+<section class="pricing-full">
+  <div class="container">
+    <h1>Pricing Plans</h1>
+    <p class="subtitle">Choose the plan that fits your legal document needs. All plans include citation verification and CourtListener access.</p>
+    
+    <div class="pricing-grid-full">
+      {% for tier in pricing_tiers %}
+      <div class="pricing-card-full {% if tier.highlight %}highlighted{% endif %}">
+        {% if tier.highlight %}<div class="popular-badge">MOST POPULAR</div>{% endif %}
+        <div class="card-header">
+          <h2>{{ tier.name }}</h2>
+          <div class="price-display">
+            <span class="currency">$</span>
+            <span class="amount">{{ tier.price if tier.price > 0 else '0' }}</span>
+            {% if tier.price > 0 %}<span class="period">/month</span>{% endif %}
+          </div>
+          <p class="price-note">{% if tier.price == 0 %}Free forever{% elif tier.price == 5 %}Billed monthly{% elif tier.price == 49 %}Billed monthly{% else %}Billed monthly{% endif %}</p>
+        </div>
+        
+        <div class="card-body">
+          <ul class="feature-list">
+            {% for feature in tier.features %}
+            <li>
+              <span class="check">✅</span>
+              {{ feature }}
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        
+        <div class="card-footer">
+          {% if tier.name == 'Enterprise' %}
+          <a href="/contact" class="btn btn-primary btn-block">Contact Sales</a>
+          {% else %}
+          <a href="/generate" class="btn {% if tier.highlight %}btn-primary{% else %}btn-outline{% endif %} btn-block">Choose {{ tier.name }}</a>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    
+    <div class="pricing-faq">
+      <h3>Frequently Asked Questions</h3>
+      <div class="faq-item">
+        <h4>Can I cancel anytime?</h4>
+        <p>Yes, all paid plans can be cancelled anytime. Free plan has no commitment.</p>
+      </div>
+      <div class="faq-item">
+        <h4>What AI models are used?</h4>
+        <p>We use OpenRouter to access 200+ models including Claude, GPT-4, Gemini, and more. Pro users get priority access to premium models.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Is this legal advice?</h4>
+        <p>No. This is a document preparation tool only. Always review documents with a qualified attorney before filing. No attorney-client relationship is created.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Which states are supported?</h4>
+        <p>Currently: Alabama, California, Texas, New York, Florida, and Illinois. Each state has 10 document types (60+ total templates).</p>
+      </div>
+      <div class="faq-item">
+        <h4>How does citation verification work?</h4>
+        <p>Every case citation is checked against CourtListener's 9M+ case database. Hallucinated citations (that don't exist) are flagged before you file.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>&copy; 2026 AI Legal Document Assistant - Project SUMMER. Not legal advice.</p>
+  </div>
+</footer>
+</body>
+</html>
